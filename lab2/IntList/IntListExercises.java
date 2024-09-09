@@ -56,6 +56,9 @@ public class IntListExercises {
             x = x / 10;
         }
         int firstDigit = x % 10;
+        if (x==10){
+            return false;
+        }
         return firstDigit == lastDigit;
     }
 

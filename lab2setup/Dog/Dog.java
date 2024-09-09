@@ -1,7 +1,7 @@
 package Dog;
 
 public class Dog {
-    private int size;
+    public int size;
 
     public Dog(int s) {
         size = s;
