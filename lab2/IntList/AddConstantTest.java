@@ -3,8 +3,9 @@ package IntList;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-public class AddConstantTest {
 
+
+public class AddConstantTest {
     @Test
     public void testAddConstantOne() {
         IntList lst = IntList.of(1, 2, 3, 4, 5);
