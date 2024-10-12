@@ -153,7 +153,17 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
+        for (int i = 0; i < b.size(); i++){
+            for (int j = 0; j < b.size(); j++){
+                if (b.tile(i, j) == null){
+                    continue;
+                }
+                Tile t = b.tile(i, j);
+                if (t.value() == MAX_PIECE){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -164,10 +174,61 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+        for (int i = 0; i < b.size(); i++){
+            for (int j = 0; j < b.size(); j++){
+                if (b.tile(i, j) == null){
+                    return true;
+                }
+                Tile t = b.tile(i, j);
+                Tile[] tiles = Model.fourDirectionValidTile(i, j, b);
+                // note: use "k" (not "i" or "j")as index and count below loop
+                for (int k = 0; k < tiles.length; k++){
+                    if (tiles[k] == null){
+                        continue;
+                    }
+                    if (tiles[k].value() == t.value()){
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
+    /** Return list that contains valid Tile*/
+    public static Tile[] fourDirectionValidTile(int col, int row, Board b){
+        Tile[] tiles = new Tile[4];
+        int cnt = 0;
+        int length = b.size();
+        if (Model.validIndex(col - 1 ,row ,length)){
+            tiles[cnt] = b.tile(col -1, row);
+            cnt += 1;
+        }
+        if (Model.validIndex(col + 1 ,row ,length)){
+            tiles[cnt] = b.tile(col + 1,row);
+            cnt += 1;
+        }
+        if (Model.validIndex(col ,row - 1 ,length)){
+            tiles[cnt] = b.tile(col ,row - 1);
+            cnt += 1;
+        }
+        if (Model.validIndex(col,row + 1 ,length)){
+            tiles[cnt] = b.tile(col,row + 1);
+        }
+        return tiles;
+    }
+
+    /** Return Ture if valid ,otherwise return false */
+    public static boolean validIndex(int col, int row, int length){
+        if (col < 0 || row < 0){
+            return false;
+        }
+        // note: list[4] from 0 to 3, so list[4] is impossible in list[4]
+        if (col >= length || row >= length){
+            return false;
+        }
+        return true;
+    }
 
     @Override
      /** Returns the model as a string, used for debugging. */
