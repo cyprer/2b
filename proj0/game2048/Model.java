@@ -113,12 +113,58 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+        this.board.setViewingPerspective(side);
+        int length = this.board.size() - 1;
+        int maxRow = length;
+        for (int col = 0; col <= length; col++){
+            for (int row = length; row >= 0; row--){
+                // check
+                if (row == length){
+                    continue;
+                }
+                Tile t = this.board.tile(col, row);
+                if (t == null){
+                    continue;
+                }
+
+                // move
+                int moveRow = Model.getMoveRow(col, row, maxRow, this.board);
+                if (moveRow != row){
+                    // if merged, increase score
+                    // and maxRow sub 1 due to we CAN'T merge to a merged tile again
+                    if (board.move(col, moveRow, t)){
+                        this.score += this.board.tile(col, moveRow).value();
+                        maxRow -= 1;
+                    }
+                    changed = true;
+                }
+            }
+            // reset maxRow
+            maxRow = length;
+        }
+        // always set back to north
+        this.board.setViewingPerspective(Side.NORTH);
 
         checkGameOver();
         if (changed) {
             setChanged();
         }
         return changed;
+    }
+
+    public static int getMoveRow(int col, int row, int maxRow, Board b){
+        for (int moveRow = maxRow; moveRow >= 0; moveRow--){
+            // "up tile" is empty
+            if (b.tile(col, moveRow) == null){
+                return moveRow;
+            }
+            // same value("up tile" value equals current tile value)
+            if (b.tile(col, moveRow).value() == b.tile(col, row).value()){
+                return moveRow;
+            }
+        }
+        // can't move, return current row of current
+        return row;
     }
 
     /** Checks if the game is over and sets the gameOver variable
