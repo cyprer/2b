@@ -24,7 +24,7 @@ public class GuitarString {
         //       Your should initially fill your buffer array with zeros.
         int capacity = (int)(Math.round(SR / frequency));
         buffer = new ArrayDeque<>();
-        while (capacity > 0){
+        while (capacity > 0) {
             buffer.addFirst(0.0);
             capacity -= 1;
         }

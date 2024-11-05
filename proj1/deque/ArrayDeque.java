@@ -15,14 +15,14 @@ import java.util.Iterator;
 //public T removeLast()
 //public T get(int index)
 
-public class ArrayDeque<T> implements Deque<T> ,Iterable<T>{
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private T[] items;
     private int size;
     private int nextFirst;
     private int nextLast;
 
     /** Creates an empty Array deque. */
-    public ArrayDeque(){
+    public ArrayDeque() {
         items = (T[]) new Object[8];
         size = 0;
         nextFirst = 8 / 2;
@@ -30,13 +30,13 @@ public class ArrayDeque<T> implements Deque<T> ,Iterable<T>{
     }
 
     /** Resizes the underlying array to the target capacity. */
-    private void resize(int capacity, boolean isAdd){
+    private void resize(int capacity, boolean isAdd) {
         T[] newItems = (T[]) new Object[capacity];
         // if resize() called by addFirst/Last, copy to all old items in middle part
         // (i.e. from "size/2" to "size/2 + size - 1")
         // otherwise, resize() called by removeFirst/Last, copy to all old items from index of first
         // note: "size" is old "size"
-        if (isAdd){
+        if (isAdd) {
             System.arraycopy(items, nextLast, newItems, size / 2, size - nextLast);
             System.arraycopy(items, 0, newItems, (size - nextLast) + size / 2, nextLast);
         } else {
@@ -47,7 +47,7 @@ public class ArrayDeque<T> implements Deque<T> ,Iterable<T>{
 
     /** Adds item to the front of the deque. */
     @Override
-    public void addFirst(T item){
+    public void addFirst(T item) {
         if (size == items.length) {
             resize(size * 2, true);
             // keep circular deque,
@@ -67,7 +67,7 @@ public class ArrayDeque<T> implements Deque<T> ,Iterable<T>{
 
     /** Inserts X into the back of the deque. */
     @Override
-    public void addLast(T item){
+    public void addLast (T item) {
         if (size == items.length) {
             resize(size * 2, true);
             // keep circular deque,
@@ -82,7 +82,7 @@ public class ArrayDeque<T> implements Deque<T> ,Iterable<T>{
 
     /** Removes the front of the deque. */
     @Override
-    public T removeFirst(){
+    public T removeFirst() {
         if (isEmpty()){
             return null;
         }
@@ -101,7 +101,7 @@ public class ArrayDeque<T> implements Deque<T> ,Iterable<T>{
 
     /** Removes the back of the deque. */
     @Override
-    public T removeLast(){
+    public T removeLast() {
         if (isEmpty()){
             return null;
         }
@@ -112,7 +112,7 @@ public class ArrayDeque<T> implements Deque<T> ,Iterable<T>{
             nextLast = size;
         }
         // "-1 % items.length == -1" in java
-        if ((nextLast - 1) % items.length == -1){
+        if ((nextLast - 1) % items.length == -1) {
             nextLast = (nextLast - 1) + items.length;
         } else {
             nextLast = (nextLast - 1) % items.length;
@@ -126,7 +126,7 @@ public class ArrayDeque<T> implements Deque<T> ,Iterable<T>{
     /** Gets the ith item in the deque (0 is the front). */
     // note: when add first from 0 to 3, then, the list is "3->2->1->0", the "3" is first
     @Override
-    public T get(int i){
+    public T get(int i) {
         int index = nextFirst + i + 1;
         if (index > 0){
             return items[index % items.length];
@@ -136,17 +136,17 @@ public class ArrayDeque<T> implements Deque<T> ,Iterable<T>{
 
     /** Returns the number of items in the deque. */
     @Override
-    public int size(){
+    public int size() {
         return size;
     }
 
     /** Prints the items in the deque from first to last, separated by a space.
      * Once all the items have been printed, print out a new line. */
     @Override
-    public void printDeque(){
+    public void printDeque() {
         int tempSize = size();
         int cnt = nextFirst + 1;
-        while(tempSize > 0){
+        while(tempSize > 0) {
             if (tempSize == 1){
                 System.out.println(items[cnt]);
                 return;
@@ -159,7 +159,7 @@ public class ArrayDeque<T> implements Deque<T> ,Iterable<T>{
 
     // The Deque objects we’ll make are iterable (i.e. Iterable<T>)
     // so we must provide this method to return an iterator.
-    public Iterator<T> iterator(){
+    public Iterator<T> iterator() {
         return new ArrayDequeIterator();
     }
 
@@ -186,22 +186,22 @@ public class ArrayDeque<T> implements Deque<T> ,Iterable<T>{
     // (as goverened by the generic T’s equals method) in the same order.
     // note: use "equals" instead of "==", when comparing of content from object
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
         if (o == null) {
             return false;
         }
-        if (!(o instanceof Deque)){
+        if (!(o instanceof Deque)) {
             return false;
         }
 
         Deque<T> obj = (Deque<T>)o;
-        if (obj.size() != this.size()){
+        if (obj.size() != this.size()) {
             return false;
         }
-        for(int i = 0; i < obj.size(); i += 1){
+        for(int i = 0; i < obj.size(); i += 1) {
             T itemFromObj =  obj.get(i);
             T itemFromThis = this.get(i);
             if (!itemFromObj.equals(itemFromThis)){

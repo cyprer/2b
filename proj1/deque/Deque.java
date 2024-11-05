@@ -10,8 +10,8 @@ public interface Deque<T> {
     T get(int index);
 
     /** Returns true if deque is empty, false otherwise.*/
-    default boolean isEmpty(){
-        if (size() == 0){
+    default boolean isEmpty() {
+        if (size() == 0) {
             return true;
         }
         return false;
