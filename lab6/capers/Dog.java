@@ -62,7 +62,7 @@ public class Dog implements Serializable{ // TODO
         // TODO (hint: don't forget dog names are unique)
         File DOG_FILE = join(DOG_FOLDER, name);
         // class Dog "implements Serializable" in class Dog
-        writeObject(DOG_FILE, this);
+        Utils.writeObject(DOG_FILE, this);
     }
 
     @Override
