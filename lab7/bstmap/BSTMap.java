@@ -17,7 +17,7 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V> {
         return null;
     }
 
-   private class Node {
+  private class Node {
         private K key;
         private V value;
         private Node left,right;
@@ -90,6 +90,9 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V> {
     public Set<K> keySet(){
         return keySet;
     }
+
+
+
     public V remove(K key) {
         if (!containsKey(key)) throw new IllegalArgumentException("invalid key");
         remove(root, key);
