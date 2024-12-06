@@ -24,6 +24,11 @@ public class Repository {
     public static final File CWD = new File(System.getProperty("user.dir"));
     /** The .gitlet directory. */
     public static final File GITLET_DIR = join(CWD, ".gitlet");
-
+    public static final File OBJECTS_DIR = join(GITLET_DIR, "objects");
+    public static final File REFS_DIR = join(GITLET_DIR, "refs");
+    public static final File HEADS_DIR = join(REFS_DIR, "heads");
+    public static final File HEAD_FILE = join(GITLET_DIR, "HEAD");
+    public static final File STAGE_DIR = join(GITLET_DIR, "stage");
     /* TODO: fill in the rest of this class. */
+
 }
