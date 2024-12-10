@@ -1,6 +1,10 @@
 package gitlet;
 
+import java.io.File;
 import java.io.Serializable;
+
+import static gitlet.Repository.HEAD_FILE;
+import static gitlet.Utils.*;
 
 /** Represents a branch in a gitlet repository.
  *  TODO: It's a good idea to give a description here of what else this Class
@@ -41,6 +45,23 @@ public class Branch implements Serializable {
     public void setCommitID(String commitID) {
         this.commitID = commitID;
     }
+    public void saveBranch() {
+        File branchFile = join(Repository.HEADS_DIR, name);
+        writeObject(branchFile, this);
+    }
 
-    /* TODO: fill in the rest of this class. */
+    public static Branch getCurrentBranch(){
+        String headRef = Utils.readContentsAsString(HEAD_FILE);
+        return Utils.readObject(join(Repository.HEADS_DIR, headRef), Branch.class);
+    }
+
+    public static void setCurrentBranch(String branchName) {
+        File branchFile = join(Repository.HEADS_DIR, branchName);
+        if (!branchFile.exists()) {
+            printErrorWithExit("A branch with that name does not exist.");
+        }
+        writeContents(HEAD_FILE, "refs/heads/" + branchName);
+    }
+
+
 }

@@ -6,6 +6,8 @@ import java.util.*;
 import java.util.Date;
 import gitlet.Utils.*;
 
+import static gitlet.Utils.join;
+
 /** Represents a gitlet commit object.
  *  TODO: It's a good idea to give a description here of what else this Class
  *  does at a high level.
@@ -25,6 +27,7 @@ public class Commit implements Serializable {
     private String message;
     private Date date;
     private String parentID;
+    private String secondParentID;
     private String commitID;
     private Map<String, String> fileToBlobMap; // Map to store filename to blob ID mapping
 
@@ -38,6 +41,10 @@ public class Commit implements Serializable {
         this.commitID = Utils.sha1(Utils.serialize(this)); // Generate a unique commit ID using serialization
     }
 
+    public Commit(String message, String parentID, String secondParentID, Map<String, String> fileToBlobMap) {
+            this(message, parentID, fileToBlobMap);
+            this.secondParentID = secondParentID;
+         }
     public String getCommitID() {
         return commitID;
     }
@@ -48,6 +55,10 @@ public class Commit implements Serializable {
 
     public String getParentID() {
         return parentID;
+    }
+
+    public String getSecondParentID() {
+        return secondParentID;
     }
 
     public Map<String, String> getFileToBlobMap() {
@@ -66,15 +77,10 @@ public class Commit implements Serializable {
     public static String getCurrentCommitID() {
         // 读取 .gitlet/HEAD 文件的内容
         String headRef = Utils.readContentsAsString(Repository.HEAD_FILE);
-
-        // 解析引用路径，构建指向分支对象的文件路径
-        File branchFile = Utils.join(Repository.GITLET_DIR, headRef);
-
         // 反序列化 Branch 对象并获取提交 ID
-        Branch currentBranch = Utils.readObject(branchFile, Branch.class);
+        Branch currentBranch = Utils.readObject(join(Repository.HEADS_DIR, headRef), Branch.class);
         return currentBranch.getCommitID();
     }
-
 
     public static Commit getCurrentCommit() {
         String currentCommitID = getCurrentCommitID();
