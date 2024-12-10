@@ -236,4 +236,16 @@ class Utils {
         System.out.printf(msg, args);
         System.out.println();
     }
+
+    // print message of error
+    public static void printError(String msg) {
+        System.out.println(msg);
+    }
+
+    // print message of error, then exit programme
+    public static void printErrorWithExit(String msg) {
+        printError(msg);
+        System.exit(0);
+    }
+
 }

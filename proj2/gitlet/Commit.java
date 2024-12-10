@@ -64,12 +64,30 @@ public class Commit implements Serializable {
     }
 
     public static String getCurrentCommitID() {
-        return Utils.readContentsAsString(Repository.HEAD_FILE);
+        // 读取 .gitlet/HEAD 文件的内容
+        String headRef = Utils.readContentsAsString(Repository.HEAD_FILE);
+
+        // 解析引用路径，构建指向分支对象的文件路径
+        File branchFile = Utils.join(Repository.GITLET_DIR, headRef);
+
+        // 反序列化 Branch 对象并获取提交 ID
+        Branch currentBranch = Utils.readObject(branchFile, Branch.class);
+        return currentBranch.getCommitID();
     }
+
 
     public static Commit getCurrentCommit() {
         String currentCommitID = getCurrentCommitID();
         return readCommit(currentCommitID);
+    }
+
+    public void saveCommit() {
+        File commitFile = Utils.join(Repository.OBJECTS_DIR, commitID);
+        Utils.writeObject(commitFile, this);
+    }
+
+    public boolean equals(Commit other) {
+        return this.commitID.equals(other.commitID);
     }
 
 
