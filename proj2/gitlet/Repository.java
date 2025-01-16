@@ -59,6 +59,7 @@ public class Repository {
 
     /* TODO: fill in the rest of this class. */
     public static void init() {
+        System.out.println("当前工作目录");
         if (GITLET_DIR.exists()) {
             printErrorWithExit("A Gitlet version-control system already exists in the current directory.");
         }
@@ -84,10 +85,15 @@ public class Repository {
         writeContents(HEAD_FILE, "refs/heads/master");
     }
 
+    public static void printCWD() {
+        System.out.println("当前工作目录: " + CWD.getPath());
+        System.out.println("测试");
+    }
     public static void add(String fileName) {
         // 如果文件不存在报错并退出
         File fileToAdd = join(CWD, fileName);
         if (!fileToAdd.exists()) {
+            printCWD();
             printErrorWithExit("File does not exist.");
         }
 
